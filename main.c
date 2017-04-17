@@ -219,10 +219,10 @@ int main(int argc, char *argv[]) {
                  Paso los FF a numeros 1.*/
                 vRes = _mm_and_si128(vRes, n1);
 
-                vRes = _mm_slli_si128(vRes, 1);
+                vRes = _mm_srli_si128(vRes, 1);
 
                 /*guardo en la matrizAux el nuevo estado de las 14 celulas analisadas*/
-                _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14)), vRes);
+                _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14) + 1), vRes);
 
                 /*esto es lo que se hacia antes*/
                 /*cantVivas = 0;
