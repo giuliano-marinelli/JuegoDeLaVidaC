@@ -7,7 +7,11 @@
 #define IMPMUNDO(matriz) ({\
     for (i = 1; i < rows + 1; ++i) {\
         for (j = 1; j < cols + 1; ++j) {\
-            printf("%c", matriz[i][j]);\
+            if (matriz[i][j] == 0) {\
+                printf(".");\
+            } else {\
+                printf("O");\
+            }\
         }\
         printf("\n");\
     }\
@@ -17,7 +21,7 @@
 #define IMPMUNDOCOMP(matriz) ({\
     for (i = 0; i < rows + 2; i++) {\
         for (j = 0; j < cols + 2; j++) {\
-            printf("%c", matriz[i][j]);\
+            printf("%i", matriz[i][j]);\
         }\
         printf("\n");\
     }\
@@ -71,13 +75,21 @@ int main(int argc, char *argv[]) {
      *  operar con mundo y guardar el resultado en mundoAux*/
     /*el tamaño en memoria es equivalente a cada elemento de la matriz, ya que
      se guardara continua en la memoria*/
-    if (posix_memalign((void*) &mundo, 16, (rows + 2)*(cols + 2)) != 0) {
+    /*if (posix_memalign((void*) &mundo, 16, (rows + 2)*(cols + 2)) != 0) {
         perror("posix_memalign dio error para mundo");
         exit(1);
     }
     if (posix_memalign((void*) &mundoAux, 16, (rows + 2)*(cols + 2)) != 0) {
         perror("posix_memalign dio error para mundoAux");
         exit(1);
+    }*/
+
+    posix_memalign((void*) &mundo, 16, (rows + 2) * sizeof (char *));
+    posix_memalign((void*) &mundoAux, 16, (rows + 2) * sizeof (char *));
+
+    for (i = 0; i < rows + 2; i++) {
+        posix_memalign((void*) &mundo[i], 16, (cols + 2 + (14 - (cols % 14)) + 10000) * sizeof (char));
+        posix_memalign((void*) &mundoAux[i], 16, (cols + 2 + (14 - (cols % 14)) + 10000) * sizeof (char));
     }
 
     /*asi se asignaba memoria cuando no estaba alineada*/
@@ -90,7 +102,7 @@ int main(int argc, char *argv[]) {
     }*/
 
     /*inicializar elementos con 0 o 1 en matriz llamada "mundo"*/
-    s = (char *) malloc(cols * sizeof (char));
+    s = (char *) malloc((cols + 1) * sizeof (char));
     if (s == NULL) {
         printf("Memoria llena.\n");
         return 1;
@@ -101,8 +113,8 @@ int main(int argc, char *argv[]) {
 
     while (res != NULL && i < rows + 1) {
         // printf("Linea %i: %s => strlen %i (incluye salto de linea)\n", i, s, strlen(s));
-        for (j = 0; j < strlen(s) - 1; j++) {
-            mundo[i][j + 1] = (s[j] == '.') ? '0' : '1';
+        for (j = 0; j < strlen(s) - 2; j++) {
+            mundo[i][j + 1] = (s[j] == '.') ? 0 : 1;
             //printf("ENTRO JOTA %i\n",j );
         }
 
@@ -111,18 +123,18 @@ int main(int argc, char *argv[]) {
          salto de linea en la ultima fila para la matriz, dejando una linea en blanco.*/
 
         for (j = strlen(s) - 1; j < cols; j++) {
-            mundo[i][j + 1] = '0';
+            mundo[i][j + 1] = 0;
             //printf("22 ENTRO JOTA %i en I %i\n",j,i );
         }
         res = fgets(s, cols + 2, f);
         i++;
-    };
+    }
 
     /*llenar con ceros las filas que falten*/
     for (j = i; j < rows + 1; j++) {
-        memset(mundo[j], '0', cols + 2);
+        memset(mundo[j], 0, cols + 2);
     }
-    
+
     int iteracion = 0;
     short cantVivas = 0;
     //repetir cantidad de pasos
@@ -146,7 +158,7 @@ int main(int argc, char *argv[]) {
             mundo[i][cols + 1] = mundo[i][1];
         }
 
-        printf("Iteracion %i mundo: \n", (iteracion + 1));
+        printf("Iteracion %i mundo: \n", (iteracion));
         IMPMUNDO(mundo);
 
 
@@ -154,16 +166,16 @@ int main(int argc, char *argv[]) {
             for (j = 0; j <= (cols / 14); j++) {
 
                 /*cargo los vectores para iterar 14 celulas*/
-                vSup = _mm_load_si128((__m128i*) (mundo + (i * (cols + 2))+(j * 14)));
-                vCen = _mm_load_si128((__m128i*) (mundo + ((i + 1)*(cols + 2))+(j * 14)));
-                vInf = _mm_load_si128((__m128i*) (mundo + ((i + 2)*(cols + 2))+(j * 14)));
+                vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (j * 14)));
+                vCen = _mm_loadu_si128((__m128i*) (mundo[i + 1] + (j * 14)));
+                vInf = _mm_loadu_si128((__m128i*) (mundo[i + 2] + (j * 14)));
 
                 /*sumo por cada columna*/
                 vSumIni = _mm_add_epi8(vSup, vCen);
                 vSumIni = _mm_add_epi8(vSumIni, vInf);
 
                 /*obtengo dos vectores en donde muevo los operandos a la 
-                 * izquierda y a la derecha respectivamente.
+                 izquierda y a la derecha respectivamente.
                  Estos permitiran sumar las adyacentes de una celula incluyendo
                  a la misma*/
                 vSumIniSftIzq = _mm_slli_si128(vSumIni, 1);
@@ -207,8 +219,10 @@ int main(int argc, char *argv[]) {
                  Paso los FF a numeros 1.*/
                 vRes = _mm_and_si128(vRes, n1);
 
+                vRes = _mm_slli_si128(vRes, 1);
+
                 /*guardo en la matrizAux el nuevo estado de las 14 celulas analisadas*/
-                _mm_store_si128((__m128i*) (mundoAux + ((i + 1)*(cols + 2))+(j * 14)), vRes);
+                _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14)), vRes);
 
                 /*esto es lo que se hacia antes*/
                 /*cantVivas = 0;
@@ -236,36 +250,36 @@ int main(int argc, char *argv[]) {
     } while (iteracion < steps);
 
     printf("Estado final: \n");
-    //    IMPMUNDO(mundo);
+    IMPMUNDO(mundo);
 
-    /*Salida por archivo de texto*/
-    FILE *fp;
+    //    /*Salida por archivo de texto*/
+    //    FILE *fp;
+    //
+    //    //si no existe salida.txt lo creara
+    //    fp = fopen("salida.txt", "w+");
+    //    char buffer[cols];
+    //    fputs("cols ", fp);
+    //
+    //    /*cargo un buffer de char con el valor de cols, para despues copiar el buffer 
+    //    en el archivo de salida con fputs*/
+    //    sprintf(buffer, "%d", cols);
+    //    fputs(buffer, fp);
+    //    fputs("\n", fp);
+    //    fputs("rows ", fp);
+    //    sprintf(buffer, "%d", rows);
+    //    fputs(buffer, fp);
+    //    fputs("\n", fp);
+    //    fputs("steps ", fp);
+    //    sprintf(buffer, "%d", steps);
+    //    fputs(buffer, fp);
+    //    fputs("\n", fp);
+    //
+    //    for (i = 1; i < rows + 1; ++i) {
+    //        fwrite(*(mundo + i), sizeof (char), cols, fp);
+    //        fputs("\n", fp);
+    //    }
+    //    fclose(fp);
 
-    //si no existe salida.txt lo creara
-    fp = fopen("salida.txt", "w+");
-    char buffer[cols];
-    fputs("cols ", fp);
-
-    /*cargo un buffer de char con el valor de cols, para despues copiar el buffer 
-    en el archivo de salida con fputs*/
-    sprintf(buffer, "%d", cols);
-    fputs(buffer, fp);
-    fputs("\n", fp);
-    fputs("rows ", fp);
-    sprintf(buffer, "%d", rows);
-    fputs(buffer, fp);
-    fputs("\n", fp);
-    fputs("steps ", fp);
-    sprintf(buffer, "%d", steps);
-    fputs(buffer, fp);
-    fputs("\n", fp);
-
-    for (i = 1; i < rows + 1; ++i) {
-        fwrite(*(mundo + i), sizeof (char), cols, fp);
-        fputs("\n", fp);
-    }
-
-    fclose(fp);
     fclose(f);
     free(s);
 }
