@@ -29,17 +29,19 @@
 })
 
 int main(int argc, char *argv[]) {
-    time_t secondsIni;
-    time_t secondsFin;
-    secondsIni = time(NULL);
-    //serial(argc, argv);
-    //vectorial(argc, argv);
-    secondsFin = time(NULL);
-    printf("\nTiempo: %ld\n", (secondsFin - secondsIni));
+    //time_t secondsIni;
+    //time_t secondsFin;
+    //secondsIni = time(NULL);
+    
+    //serie(argc, argv);
+    vectorial(argc, argv);
+    
+    //secondsFin = time(NULL);
+    //printf("\nTiempo: %ld\n", (secondsFin - secondsIni));
     return 0;
 }
 
-void serial(int argc, char *argv[]) {
+void serie(int argc, char *argv[]) {
     FILE *f;
     char *s, *res;
     int rows, cols, steps, n, i, j, k, p;
