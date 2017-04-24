@@ -29,8 +29,8 @@
 })
 
 int main(int argc, char *argv[]) {
-    serial(argc, argv);
-    //vectorial(argc, argv);
+    //serial(argc, argv);
+    vectorial(argc, argv);
     return 0;
 }
 
@@ -129,8 +129,8 @@ void serial(int argc, char *argv[]) {
             mundo[i][cols + 1] = mundo[i][1];
         }
 
-        printf("Iteracion %i mundo: \n", (iteracion + 1));
-        IMPMUNDO(mundo);
+        //printf("Iteracion %i mundo: \n", (iteracion + 1));
+        //IMPMUNDO(mundo);
 
         //contar cantidad de celulas vecinas vivas para cada celula
         for (i = 1; i < rows + 1; i++) {
@@ -266,8 +266,8 @@ void vectorial(int argc, char *argv[]) {
             mundo[i][cols + 1] = mundo[i][1];
         }
 
-        printf("Iteracion %i mundo: \n", (iteracion));
-        IMPMUNDO(mundo);
+        //printf("Iteracion %i mundo: \n", (iteracion));
+        //IMPMUNDO(mundo);
 
         for (i = 0; i < rows; i++) {
             for (j = 0; j <= (cols / 14); j++) {

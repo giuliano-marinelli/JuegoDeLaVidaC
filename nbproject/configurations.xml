@@ -12,10 +12,23 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="comp" displayName="comp" projectFiles="true">
+        <itemPath>comp/serie</itemPath>
+        <itemPath>comp/serieO1</itemPath>
+        <itemPath>comp/serieO2</itemPath>
+        <itemPath>comp/serieO3</itemPath>
+        <itemPath>comp/vectorial</itemPath>
+        <itemPath>comp/vectorialO1</itemPath>
+        <itemPath>comp/vectorialO2</itemPath>
+        <itemPath>comp/vectorialO3</itemPath>
+      </logicalFolder>
       <itemPath>entrada.cells</itemPath>
+      <itemPath>entradaGrande.cells</itemPath>
+      <itemPath>entradaPatron.cells</itemPath>
       <itemPath>main.c</itemPath>
-      <itemPath>patronEntrada.cells</itemPath>
-      <itemPath>patronSalida.cells</itemPath>
+      <itemPath>salidaGrande.cells</itemPath>
+      <itemPath>salidaGrandeEsperada.cells</itemPath>
+      <itemPath>salidaPatron.cells</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -29,6 +42,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>comp</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -39,16 +55,40 @@
       </toolsSet>
       <compileType>
         <cTool>
+          <developmentMode>0</developmentMode>
+          <commandlineTool>gcc</commandlineTool>
           <commandLine>-msse2</commandLine>
         </cTool>
       </compileType>
+      <item path="comp/serie" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO2" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO3" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorial" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO2" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO3" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="entrada.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="patronEntrada.cells" ex="false" tool="3" flavor2="0">
+      <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="patronSalida.cells" ex="false" tool="3" flavor2="0">
+      <item path="salidaGrandeEsperada.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="salidaPatron.cells" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -71,13 +111,35 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="comp/serie" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO2" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/serieO3" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorial" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO2" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/vectorialO3" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="entrada.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="patronEntrada.cells" ex="false" tool="3" flavor2="0">
+      <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="patronSalida.cells" ex="false" tool="3" flavor2="0">
+      <item path="salidaGrandeEsperada.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="salidaPatron.cells" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
