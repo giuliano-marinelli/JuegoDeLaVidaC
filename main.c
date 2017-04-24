@@ -29,8 +29,13 @@
 })
 
 int main(int argc, char *argv[]) {
+    time_t secondsIni;
+    time_t secondsFin;
+    secondsIni = time(NULL);
     //serial(argc, argv);
-    vectorial(argc, argv);
+    //vectorial(argc, argv);
+    secondsFin = time(NULL);
+    printf("\nTiempo: %ld\n", (secondsFin - secondsIni));
     return 0;
 }
 

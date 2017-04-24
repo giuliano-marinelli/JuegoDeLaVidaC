@@ -30,10 +30,10 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" entrada2.cells</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" entrada1.cells</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" patronEntrada.cells</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" entrada.cells</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" entradaGrande.cells</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" entrada.cells</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" entradaGrande.cells</runcommand>
+        <runcommand>"${OUTPUT_PATH}" entrada.cells</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
