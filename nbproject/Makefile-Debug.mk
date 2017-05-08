@@ -42,11 +42,11 @@ OBJECTFILES= \
 
 
 # C Compiler Flags
-CFLAGS=-msse2
+CFLAGS=-fopenmp -msse2
 
 # CC Compiler Flags
-CCFLAGS=-fopenmp -msse2
-CXXFLAGS=-fopenmp -msse2
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=

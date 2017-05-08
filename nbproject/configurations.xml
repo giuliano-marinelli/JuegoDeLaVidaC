@@ -70,11 +70,8 @@
         <cTool>
           <developmentMode>0</developmentMode>
           <commandlineTool>gcc</commandlineTool>
-          <commandLine>-msse2</commandLine>
-        </cTool>
-        <ccTool>
           <commandLine>-fopenmp -msse2</commandLine>
-        </ccTool>
+        </cTool>
       </compileType>
       <item path="comp/openmpO3" ex="false" tool="3" flavor2="0">
       </item>
