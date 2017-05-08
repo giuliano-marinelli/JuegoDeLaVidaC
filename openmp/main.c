@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     char **mundo;
     char **mundoAux;
     char **aux;
-
+    
     /*se definen los vectores (registros) que se utilizaran para operar la matriz*/
     __m128i vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot,
             vAdyEq4, vAdyEq3, vRes;
@@ -88,7 +88,6 @@ int main(int argc, char *argv[]) {
     }
     res = fgets(s, cols + 2, f);
     i = 1;
-    printf("\n");
     while (res != NULL && i < rows + 1) {
         //printf("Linea %i: %s => strlen %i (incluye salto de linea)\n", i, s, strlen(s));
         for (j = 0; j < strlen(s) - 1; j++) {
@@ -137,11 +136,13 @@ int main(int argc, char *argv[]) {
 
         //printf("Iteracion %i mundo: \n", (iteracion));
         //IMPMUNDO(mundo);
-            
-        #pragma omp for collapse(2)
-        for (i = 0; i < rows; i++) {
-            for (j = 0; j <= (cols / 14); j++) {
 
+        //#pragma omp for collapse(2)
+        #pragma omp parallel for firstprivate(j, vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
+        for (i = 0; i < rows; i++) {
+            //#pragma omp parallel for firstprivate(vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
+            for (j = 0; j <= (cols / 14); j++) {
+                
                 /*cargo los vectores para iterar 14 celulas*/
                 vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (j * 14)));
                 vCen = _mm_loadu_si128((__m128i*) (mundo[i + 1] + (j * 14)));
@@ -198,8 +199,7 @@ int main(int argc, char *argv[]) {
         iteracion++;
 
     } while (iteracion < steps);
-
-    printf("Estado final: \n");
+    
     IMPMUNDO(mundo);
 
     fclose(f);
