@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
         //printf("Iteracion %i mundo: \n", (iteracion));
         //IMPMUNDO(mundo);
             
-        #pragma omp parallel for collapse(2)
+        #pragma omp for collapse(2)
         for (i = 0; i < rows; i++) {
             for (j = 0; j <= (cols / 14); j++) {
 

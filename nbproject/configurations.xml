@@ -13,6 +13,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="comp" displayName="comp" projectFiles="true">
+        <itemPath>comp/openmp</itemPath>
+        <itemPath>comp/openmpO1</itemPath>
+        <itemPath>comp/openmpO2</itemPath>
         <itemPath>comp/openmpO3</itemPath>
         <itemPath>comp/serie</itemPath>
         <itemPath>comp/serieO1</itemPath>
@@ -35,7 +38,6 @@
       <itemPath>entrada.cells</itemPath>
       <itemPath>entradaGrande.cells</itemPath>
       <itemPath>entradaPatron.cells</itemPath>
-      <itemPath>main.c</itemPath>
       <itemPath>salidaGrande.cells</itemPath>
       <itemPath>salidaGrandeEsperada.cells</itemPath>
       <itemPath>salidaPatron.cells</itemPath>
@@ -73,6 +75,12 @@
           <commandLine>-fopenmp -msse2</commandLine>
         </cTool>
       </compileType>
+      <item path="comp/openmp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/openmpO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/openmpO2" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="comp/openmpO3" ex="false" tool="3" flavor2="0">
       </item>
       <item path="comp/serie" ex="false" tool="3" flavor2="0">
@@ -96,8 +104,6 @@
       <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -132,6 +138,12 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="comp/openmp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/openmpO1" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="comp/openmpO2" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="comp/openmpO3" ex="false" tool="3" flavor2="0">
       </item>
       <item path="comp/serie" ex="false" tool="3" flavor2="0">
@@ -155,8 +167,6 @@
       <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
       </item>
