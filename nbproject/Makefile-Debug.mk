@@ -35,15 +35,18 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/openmp/main.o \
+	${OBJECTDIR}/serie/main.o \
+	${OBJECTDIR}/vectorial/main.o
 
 
 # C Compiler Flags
 CFLAGS=-msse2
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-fopenmp -msse2
+CXXFLAGS=-fopenmp -msse2
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -66,6 +69,21 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/openmp/main.o: openmp/main.c 
+	${MKDIR} -p ${OBJECTDIR}/openmp
+	${RM} "$@.d"
+	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/openmp/main.o openmp/main.c
+
+${OBJECTDIR}/serie/main.o: serie/main.c 
+	${MKDIR} -p ${OBJECTDIR}/serie
+	${RM} "$@.d"
+	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/serie/main.o serie/main.c
+
+${OBJECTDIR}/vectorial/main.o: vectorial/main.c 
+	${MKDIR} -p ${OBJECTDIR}/vectorial
+	${RM} "$@.d"
+	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vectorial/main.o vectorial/main.c
 
 # Subprojects
 .build-subprojects:

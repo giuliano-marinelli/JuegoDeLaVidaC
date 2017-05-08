@@ -13,6 +13,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="comp" displayName="comp" projectFiles="true">
+        <itemPath>comp/openmpO3</itemPath>
         <itemPath>comp/serie</itemPath>
         <itemPath>comp/serieO1</itemPath>
         <itemPath>comp/serieO2</itemPath>
@@ -21,6 +22,15 @@
         <itemPath>comp/vectorialO1</itemPath>
         <itemPath>comp/vectorialO2</itemPath>
         <itemPath>comp/vectorialO3</itemPath>
+      </logicalFolder>
+      <logicalFolder name="openmp" displayName="openmp" projectFiles="true">
+        <itemPath>openmp/main.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="serie" displayName="serie" projectFiles="true">
+        <itemPath>serie/main.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="vectorial" displayName="vectorial" projectFiles="true">
+        <itemPath>vectorial/main.c</itemPath>
       </logicalFolder>
       <itemPath>entrada.cells</itemPath>
       <itemPath>entradaGrande.cells</itemPath>
@@ -44,6 +54,9 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>comp</Elem>
+    <Elem>serie</Elem>
+    <Elem>openmp</Elem>
+    <Elem>vectorial</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -59,7 +72,12 @@
           <commandlineTool>gcc</commandlineTool>
           <commandLine>-msse2</commandLine>
         </cTool>
+        <ccTool>
+          <commandLine>-fopenmp -msse2</commandLine>
+        </ccTool>
       </compileType>
+      <item path="comp/openmpO3" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="comp/serie" ex="false" tool="3" flavor2="0">
       </item>
       <item path="comp/serieO1" ex="false" tool="3" flavor2="0">
@@ -84,11 +102,17 @@
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaGrandeEsperada.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaPatron.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="serie/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="vectorial/main.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -111,6 +135,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="comp/openmpO3" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="comp/serie" ex="false" tool="3" flavor2="0">
       </item>
       <item path="comp/serieO1" ex="false" tool="3" flavor2="0">
@@ -135,11 +161,17 @@
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaGrandeEsperada.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaPatron.cells" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="serie/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="vectorial/main.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

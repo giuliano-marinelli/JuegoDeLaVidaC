@@ -11,6 +11,9 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>comp</sourceRootElem>
+                <sourceRootElem>serie</sourceRootElem>
+                <sourceRootElem>openmp</sourceRootElem>
+                <sourceRootElem>vectorial</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
