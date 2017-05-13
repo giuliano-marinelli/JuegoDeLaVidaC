@@ -1,6 +1,6 @@
-cols 150000
-rows 100000
-steps 1
+cols 1500
+rows 100
+steps 10000000
 ..O..O..O.....O....O
 ..OO....O..O..OO.O
 .OOOO.OO.OOOO.O.O.O

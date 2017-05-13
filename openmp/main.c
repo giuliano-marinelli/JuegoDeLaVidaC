@@ -137,11 +137,9 @@ int main(int argc, char *argv[]) {
         //printf("Iteracion %i mundo: \n", (iteracion));
         //IMPMUNDO(mundo);
 
-        //#pragma omp for collapse(2)
-        #pragma omp parallel private(i, j, vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes) firstprivate(n0, n1, n3, n4)
+        #pragma omp parallel private(i,j,vSup,vCen,vInf,vSumIni,vSumIniSftIzq,vSumIniSftDer,vSumTot,vAdyEq4,vAdyEq3,vRes) firstprivate(n1,n3,n4)
         {
             for (i = 0; i < rows; i++) {
-                //#pragma omp parallel for firstprivate(vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
                 for (j = 0; j <= (cols / 14); j++) {
 
                     /*cargo los vectores para iterar 14 celulas*/
