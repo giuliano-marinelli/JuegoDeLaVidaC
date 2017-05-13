@@ -87,7 +87,6 @@ int main(int argc, char *argv[]) {
     }
     res = fgets(s, cols + 2, f);
     i = 1;
-    printf("\n");
     while (res != NULL && i < rows + 1) {
         //printf("Linea %i: %s => strlen %i (incluye salto de linea)\n", i, s, strlen(s));
         for (j = 0; j < strlen(s) - 1; j++) {
@@ -197,7 +196,6 @@ int main(int argc, char *argv[]) {
 
     } while (iteracion < steps);
 
-    printf("Estado final: \n");
     IMPMUNDO(mundo);
 
     fclose(f);

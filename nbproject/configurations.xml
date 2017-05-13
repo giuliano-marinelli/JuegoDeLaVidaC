@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -15,25 +15,17 @@
       <logicalFolder name="openmp" displayName="openmp" projectFiles="true">
         <itemPath>openmp/main.c</itemPath>
         <itemPath>openmp/openmp</itemPath>
-        <itemPath>openmp/openmpO1</itemPath>
-        <itemPath>openmp/openmpO2</itemPath>
-        <itemPath>openmp/openmpO3</itemPath>
       </logicalFolder>
       <logicalFolder name="serie" displayName="serie" projectFiles="true">
         <itemPath>serie/main.c</itemPath>
         <itemPath>serie/serie</itemPath>
-        <itemPath>serie/serieO1</itemPath>
-        <itemPath>serie/serieO2</itemPath>
-        <itemPath>serie/serieO3</itemPath>
       </logicalFolder>
       <logicalFolder name="vectorial" displayName="vectorial" projectFiles="true">
         <itemPath>vectorial/main.c</itemPath>
         <itemPath>vectorial/vectorial</itemPath>
-        <itemPath>vectorial/vectorialO1</itemPath>
-        <itemPath>vectorial/vectorialO2</itemPath>
-        <itemPath>vectorial/vectorialO3</itemPath>
       </logicalFolder>
       <itemPath>entrada.cells</itemPath>
+      <itemPath>entradaEnorme.cells</itemPath>
       <itemPath>entradaGrande.cells</itemPath>
       <itemPath>entradaPatron.cells</itemPath>
       <itemPath>salidaGrande.cells</itemPath>
@@ -74,6 +66,8 @@
       </compileType>
       <item path="entrada.cells" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="entradaEnorme.cells" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
@@ -81,12 +75,6 @@
       <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="openmp/openmp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO3" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
@@ -96,21 +84,9 @@
       </item>
       <item path="serie/serie" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="serie/serieO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="serie/serieO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="serie/serieO3" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="vectorial/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="vectorial/vectorial" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO3" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -135,6 +111,8 @@
       </compileType>
       <item path="entrada.cells" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="entradaEnorme.cells" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="entradaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
       <item path="entradaPatron.cells" ex="false" tool="3" flavor2="0">
@@ -142,12 +120,6 @@
       <item path="openmp/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="openmp/openmp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="openmp/openmpO3" ex="false" tool="3" flavor2="0">
       </item>
       <item path="salidaGrande.cells" ex="false" tool="3" flavor2="0">
       </item>
@@ -157,21 +129,9 @@
       </item>
       <item path="serie/serie" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="serie/serieO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="serie/serieO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="serie/serieO3" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="vectorial/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="vectorial/vectorial" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO1" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO2" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vectorial/vectorialO3" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     char **mundo;
     char **mundoAux;
     char **aux;
-    
+
     /*se definen los vectores (registros) que se utilizaran para operar la matriz*/
     __m128i vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot,
             vAdyEq4, vAdyEq3, vRes;
@@ -138,58 +138,60 @@ int main(int argc, char *argv[]) {
         //IMPMUNDO(mundo);
 
         //#pragma omp for collapse(2)
-        #pragma omp parallel for firstprivate(j, vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
-        for (i = 0; i < rows; i++) {
-            //#pragma omp parallel for firstprivate(vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
-            for (j = 0; j <= (cols / 14); j++) {
-                
-                /*cargo los vectores para iterar 14 celulas*/
-                vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (j * 14)));
-                vCen = _mm_loadu_si128((__m128i*) (mundo[i + 1] + (j * 14)));
-                vInf = _mm_loadu_si128((__m128i*) (mundo[i + 2] + (j * 14)));
+        #pragma omp parallel private(i, j, vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes) firstprivate(n0, n1, n3, n4)
+        {
+            for (i = 0; i < rows; i++) {
+                //#pragma omp parallel for firstprivate(vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot, vAdyEq4, vAdyEq3, vRes, n0, n1, n3, n4)
+                for (j = 0; j <= (cols / 14); j++) {
 
-                /*sumo por cada columna*/
-                vSumIni = _mm_add_epi8(vSup, vCen);
-                vSumIni = _mm_add_epi8(vSumIni, vInf);
+                    /*cargo los vectores para iterar 14 celulas*/
+                    vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (j * 14)));
+                    vCen = _mm_loadu_si128((__m128i*) (mundo[i + 1] + (j * 14)));
+                    vInf = _mm_loadu_si128((__m128i*) (mundo[i + 2] + (j * 14)));
 
-                /*obtengo dos vectores en donde muevo los operandos a la 
-                 izquierda y a la derecha respectivamente.
-                 Estos permitiran sumar las adyacentes de una celula incluyendo
-                 a la misma*/
-                vSumIniSftIzq = _mm_slli_si128(vSumIni, 1);
-                vSumIniSftDer = _mm_srli_si128(vSumIni, 1);
+                    /*sumo por cada columna*/
+                    vSumIni = _mm_add_epi8(vSup, vCen);
+                    vSumIni = _mm_add_epi8(vSumIni, vInf);
 
-                /*sumo los vectores SumIni*/
-                vSumTot = _mm_add_epi8(vSumIni, vSumIniSftIzq);
-                vSumTot = _mm_add_epi8(vSumTot, vSumIniSftDer);
+                    /*obtengo dos vectores en donde muevo los operandos a la 
+                     izquierda y a la derecha respectivamente.
+                     Estos permitiran sumar las adyacentes de una celula incluyendo
+                     a la misma*/
+                    vSumIniSftIzq = _mm_slli_si128(vSumIni, 1);
+                    vSumIniSftDer = _mm_srli_si128(vSumIni, 1);
 
-                /*comparo para saber si la suma de los adyacentes es igual a 3*/
-                vAdyEq3 = _mm_cmpeq_epi8(vSumTot, n3);
+                    /*sumo los vectores SumIni*/
+                    vSumTot = _mm_add_epi8(vSumIni, vSumIniSftIzq);
+                    vSumTot = _mm_add_epi8(vSumTot, vSumIniSftDer);
 
-                /*como vAdyEq3 queda con FF en lugar de 1, pasar cada FF a un 1.*/
-                vAdyEq3 = _mm_and_si128(vAdyEq3, n1);
+                    /*comparo para saber si la suma de los adyacentes es igual a 3*/
+                    vAdyEq3 = _mm_cmpeq_epi8(vSumTot, n3);
 
-                /*hasta ahora tenemos vAdyEq3 con las celulas que tienen que 
-                 * estar vivas si tenian 3 adyacentes. (3 si estaba muerta o 2 si 
-                 * estaba viva) queda por verificar que si estaba viva siga 
-                 * estando viva con 4 adyacentes (3 mas ella misma).*/
-                vAdyEq4 = _mm_cmpeq_epi8(vSumTot, n4);
+                    /*como vAdyEq3 queda con FF en lugar de 1, pasar cada FF a un 1.*/
+                    vAdyEq3 = _mm_and_si128(vAdyEq3, n1);
 
-                /*luego hacemos un and entre el vector de las celulas y vAdyEq4 
-                 * para que queden vivas las que estaban vivas.*/
-                vAdyEq4 = _mm_and_si128(vCen, vAdyEq4);
+                    /*hasta ahora tenemos vAdyEq3 con las celulas que tienen que 
+                     * estar vivas si tenian 3 adyacentes. (3 si estaba muerta o 2 si 
+                     * estaba viva) queda por verificar que si estaba viva siga 
+                     * estando viva con 4 adyacentes (3 mas ella misma).*/
+                    vAdyEq4 = _mm_cmpeq_epi8(vSumTot, n4);
 
-                /*unificamos ambos resultados vAdyEq3 y vAdyEq4.*/
-                vRes = _mm_or_si128(vAdyEq4, vAdyEq3);
+                    /*luego hacemos un and entre el vector de las celulas y vAdyEq4 
+                     * para que queden vivas las que estaban vivas.*/
+                    vAdyEq4 = _mm_and_si128(vCen, vAdyEq4);
 
-                /*luego correr el resultado hacia la derecha para sobreescribir 
-                 * el resultado de la celda final de la iteracion anterior la 
-                 * cual no habia tenido en cuenta todas las vecinas*/
-                vRes = _mm_srli_si128(vRes, 1);
+                    /*unificamos ambos resultados vAdyEq3 y vAdyEq4.*/
+                    vRes = _mm_or_si128(vAdyEq4, vAdyEq3);
 
-                /*guardo en la matrizAux el nuevo estado de las 14 celulas analisadas*/
-                _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14) + 1), vRes);
+                    /*luego correr el resultado hacia la derecha para sobreescribir 
+                     * el resultado de la celda final de la iteracion anterior la 
+                     * cual no habia tenido en cuenta todas las vecinas*/
+                    vRes = _mm_srli_si128(vRes, 1);
 
+                    /*guardo en la matrizAux el nuevo estado de las 14 celulas analisadas*/
+                    _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14) + 1), vRes);
+
+                }
             }
         }
 
@@ -199,13 +201,13 @@ int main(int argc, char *argv[]) {
         iteracion++;
 
     } while (iteracion < steps);
-    
+
     IMPMUNDO(mundo);
 
     fclose(f);
     free(s);
     free(mundo);
     free(mundoAux);
-    
+
     return 0;
 }

@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
+CND_PLATFORM=GNU-Linux
 CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
@@ -64,17 +64,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/juegodelavidac: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/juegodelavidac ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/openmp/main.o: openmp/main.c 
+${OBJECTDIR}/openmp/main.o: openmp/main.c
 	${MKDIR} -p ${OBJECTDIR}/openmp
 	${RM} "$@.d"
 	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/openmp/main.o openmp/main.c
 
-${OBJECTDIR}/serie/main.o: serie/main.c 
+${OBJECTDIR}/serie/main.o: serie/main.c
 	${MKDIR} -p ${OBJECTDIR}/serie
 	${RM} "$@.d"
 	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/serie/main.o serie/main.c
 
-${OBJECTDIR}/vectorial/main.o: vectorial/main.c 
+${OBJECTDIR}/vectorial/main.o: vectorial/main.c
 	${MKDIR} -p ${OBJECTDIR}/vectorial
 	${RM} "$@.d"
 	$(COMPILE.c) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vectorial/main.o vectorial/main.c
@@ -85,7 +85,6 @@ ${OBJECTDIR}/vectorial/main.o: vectorial/main.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/juegodelavidac
 
 # Subprojects
 .clean-subprojects:
