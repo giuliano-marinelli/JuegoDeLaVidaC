@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <emmintrin.h>
 
 /*macro que imprime la matriz del mundo*/
 #define IMPMUNDO(matriz) ({\
@@ -36,6 +37,18 @@ int main(int argc, char *argv[]) {
     char **mundo;
     char **mundoAux;
     char **aux;
+
+    
+    /*se definen los vectores (registros) que se utilizaran para operar la matriz*/
+    __m128i vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot,
+            vAdyEq4, vAdyEq3, vRes;
+    /*contienen 16 bytes con el numeros 0, 1, 2 y 3 cargados respectivamente*/
+    __m128i n0, n1, n3, n4;
+
+    n0 = _mm_set1_epi8(0);
+    n1 = _mm_set1_epi8(1);
+    n3 = _mm_set1_epi8(3);
+    n4 = _mm_set1_epi8(4);
 
     /*controla que se haya ingresado un argumento en la llamada*/
     if (argc != 2) {
@@ -104,11 +117,7 @@ int main(int argc, char *argv[]) {
     for (j = i; j < rowsM1; j++) {
         memset(mundo[j], 0, colsM2);
     }
-    int iAux1Men;
     int iAux1Mas;
-    int iAux2Mas;
-    int jAux1Men;
-    int jAux1Mas;
     int jPor14;
     int colsDiv14 = cols / 14;
     int iteracion = 0;
