@@ -96,6 +96,7 @@ int main(int argc, char *argv[]) {
             mundo[i][j + 1] = 0;
         }
         res = fgets(s, colsM2, f);
+        strlenAux = strlen(s) - 1;
         i++;
     }
 
@@ -109,6 +110,7 @@ int main(int argc, char *argv[]) {
     int jAux1Mas;
     int iteracion = 0;
     short cantVivas = 0;
+
     //repetir cantidad de pasos
     do {
 
@@ -136,11 +138,11 @@ int main(int argc, char *argv[]) {
 
         //contar cantidad de celulas vecinas vivas para cada celula
         for (i = 1; i < rowsM1; i++) {
-            iAux1Men=i-1;
-            iAux1Mas=i+1;
+            iAux1Men = i - 1;
+            iAux1Mas = i + 1;
             for (j = 1; j < colsM1; j++) {
-                jAux1Men=j-1;
-                jAux1Mas=j+1;
+                jAux1Men = j - 1;
+                jAux1Mas = j + 1;
                 cantVivas = mundo[iAux1Men][jAux1Men] + mundo[iAux1Men][j] + mundo[iAux1Men][jAux1Mas] + mundo[i][jAux1Men] + mundo[i][jAux1Mas] + mundo[iAux1Mas][jAux1Men] + mundo[iAux1Mas][j] + mundo[iAux1Mas][jAux1Mas];
                 if (mundo[i][j] == 1) {
                     mundoAux[i][j] = (cantVivas == 2 || cantVivas == 3) ? 1 : 0;
