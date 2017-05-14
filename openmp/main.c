@@ -140,17 +140,18 @@ int main(int argc, char *argv[]) {
         //esquina inf-der
         mundo[rowsM1][colsM1] = mundo[1][1];
         //primer y ultima columna (sin considerar las esquinas).
-        #pragma omp parallel private(i,j,vSup,vCen,vInf,vSumIni,vSumIniSftIzq,vSumIniSftDer,vSumTot,vAdyEq4,vAdyEq3,vRes) firstprivate(n1,n3,n4)
+
+        for (i = 1; i < rowsM1; i++) {
+            mundo[i][0] = mundo[i][cols];
+            mundo[i][colsM1] = mundo[i][1];
+        }
+
+        //printf("Iteracion %i mundo: \n", (iteracion + 1));
+        //IMPMUNDO(mundo);
+
+        //contar cantidad de celulas vecinas vivas para cada celula
+        #pragma omp parallel private(i,j,vSup,vCen,vInf,vSumIni,vSumIniSftIzq,vSumIniSftDer,vSumTot,vAdyEq4,vAdyEq3,vRes, iAux1Mas, jPor14) firstprivate(n1,n3,n4)
         {
-            for (i = 1; i < rowsM1; i++) {
-                mundo[i][0] = mundo[i][cols];
-                mundo[i][colsM1] = mundo[i][1];
-            }
-
-            //printf("Iteracion %i mundo: \n", (iteracion + 1));
-            //IMPMUNDO(mundo);
-
-            //contar cantidad de celulas vecinas vivas para cada celula
             for (i = 0; i < rows; i++) {
                 iAux1Mas = i + 1;
                 for (j = 0; j <= (colsDiv14); j++) {
