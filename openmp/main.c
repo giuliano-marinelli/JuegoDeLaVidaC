@@ -5,10 +5,11 @@
 #include <emmintrin.h>
 #include <omp.h>
 
+
 /*macro que imprime la matriz del mundo*/
 #define IMPMUNDO(matriz) ({\
-    for (i = 1; i < rows + 1; ++i) {\
-        for (j = 1; j < cols + 1; ++j) {\
+    for (i = 1; i < rowsM1; ++i) {\
+        for (j = 1; j < colsM1; ++j) {\
             if (matriz[i][j] == 0) {\
                 printf(".");\
             } else {\
@@ -21,8 +22,8 @@
 
 /*macro que imprime la matriz completa*/
 #define IMPMUNDOCOMP(matriz) ({\
-    for (i = 0; i < rows + 2; i++) {\
-        for (j = 0; j < cols + 2; j++) {\
+    for (i = 0; i < rowsM2; i++) {\
+        for (j = 0; j < colsM2; j++) {\
             printf("%i", matriz[i][j]);\
         }\
         printf("\n");\
@@ -32,12 +33,13 @@
 int main(int argc, char *argv[]) {
     FILE *f;
     char *s, *res;
-    int rows, cols, steps, n, i, j, k, p;
+    int rows, cols, steps, n, i, j, k, p, colsM2, rowsM2, colsM1, rowsM1;
 
     /*se definen los espacios de memoria donde se almacenaran las matrices*/
     char **mundo;
     char **mundoAux;
     char **aux;
+
 
     /*se definen los vectores (registros) que se utilizaran para operar la matriz*/
     __m128i vSup, vCen, vInf, vSumIni, vSumIniSftIzq, vSumIniSftDer, vSumTot,
@@ -71,26 +73,33 @@ int main(int argc, char *argv[]) {
     }
 
     printf("cols %d\nrows %d\nsteps %d\n", cols, rows, steps);
+    rowsM2 = rows + 2;
+    colsM2 = cols + 2;
 
-    posix_memalign((void*) &mundo, 16, (rows + 2) * sizeof (char *));
-    posix_memalign((void*) &mundoAux, 16, (rows + 2) * sizeof (char *));
+    rowsM1 = rows + 1;
+    colsM1 = cols + 1;
 
-    for (i = 0; i < rows + 2; i++) {
-        posix_memalign((void*) &mundo[i], 16, (cols + 2 + (14 - (cols % 14))) * sizeof (char));
-        posix_memalign((void*) &mundoAux[i], 16, (cols + 2 + (14 - (cols % 14))) * sizeof (char));
+    mundo = malloc((rowsM2) * sizeof (char *));
+    mundoAux = malloc((rowsM2) * sizeof (char *));
+
+    for (i = 0; i < rowsM2; i++) {
+        mundo[i] = malloc((colsM2) * sizeof (char));
+        mundoAux[i] = malloc((colsM2) * sizeof (char));
     }
 
     /*inicializar elementos con 0 o 1 en matriz llamada "mundo"*/
-    s = (char *) malloc((cols + 1) * sizeof (char));
+    s = (char *) malloc((colsM1) * sizeof (char));
     if (s == NULL) {
         perror("Memoria llena.\n");
         exit(1);
     }
-    res = fgets(s, cols + 2, f);
+    res = fgets(s, colsM2, f);
     i = 1;
-    while (res != NULL && i < rows + 1) {
+
+    int strlenAux = strlen(s) - 1;
+    while (res != NULL && i < rowsM1) {
         //printf("Linea %i: %s => strlen %i (incluye salto de linea)\n", i, s, strlen(s));
-        for (j = 0; j < strlen(s) - 1; j++) {
+        for (j = 0; j < strlenAux; j++) {
             mundo[i][j + 1] = (s[j] == '.') ? 0 : 1;
         }
 
@@ -98,54 +107,58 @@ int main(int argc, char *argv[]) {
          para que funcione correctamente el archivo de entrada debe tener un 
          salto de linea en la ultima fila para la matriz, dejando una linea en blanco.*/
 
-        for (j = strlen(s) - 1; j < cols; j++) {
+        for (j = strlenAux; j < cols; j++) {
             mundo[i][j + 1] = 0;
         }
-        res = fgets(s, cols + 2, f);
+        res = fgets(s, colsM2, f);
+        strlenAux = strlen(s) - 1;
         i++;
     }
 
     /*llenar con ceros las filas que falten*/
-    for (j = i; j < rows + 1; j++) {
-        memset(mundo[j], 0, cols + 2);
+    for (j = i; j < rowsM1; j++) {
+        memset(mundo[j], 0, colsM2);
     }
-
+    int iAux1Mas;
+    int jPor14;
+    int colsDiv14 = cols / 14;
     int iteracion = 0;
     //repetir cantidad de pasos
     do {
 
         /*filas y columnas de mas para hacer el mundo rendondo*/
-        //primera fila (por referencia, luego las esquinas se sobreescriben).
+        //primera fila (por referencia, luego las esquinas se sobreescrib       en).
         mundo[0] = mundo[rows];
         //ultima fila (por referencia, luego las esquinas se sobreescriben).
-        mundo[rows + 1] = mundo[1];
+        mundo[rowsM1] = mundo[1];
         //esquina sup-izq
         mundo[0][0] = mundo[rows][cols];
         //esquina sup-der
-        mundo[0][cols + 1] = mundo[rows][1];
+        mundo[0][colsM1] = mundo[rows][1];
         //esquina inf-izq
-        mundo[rows + 1][0] = mundo[1][cols];
+        mundo[rowsM1][0] = mundo[1][cols];
         //esquina inf-der
-        mundo[rows + 1][cols + 1] = mundo[1][1];
+        mundo[rowsM1][colsM1] = mundo[1][1];
         //primer y ultima columna (sin considerar las esquinas).
-
-        for (i = 1; i < rows + 1; i++) {
-            mundo[i][0] = mundo[i][cols];
-            mundo[i][cols + 1] = mundo[i][1];
-        }
-
-        //printf("Iteracion %i mundo: \n", (iteracion));
-        //IMPMUNDO(mundo);
-
         #pragma omp parallel private(i,j,vSup,vCen,vInf,vSumIni,vSumIniSftIzq,vSumIniSftDer,vSumTot,vAdyEq4,vAdyEq3,vRes) firstprivate(n1,n3,n4)
         {
-            for (i = 0; i < rows; i++) {
-                for (j = 0; j <= (cols / 14); j++) {
+            for (i = 1; i < rowsM1; i++) {
+                mundo[i][0] = mundo[i][cols];
+                mundo[i][colsM1] = mundo[i][1];
+            }
 
+            //printf("Iteracion %i mundo: \n", (iteracion + 1));
+            //IMPMUNDO(mundo);
+
+            //contar cantidad de celulas vecinas vivas para cada celula
+            for (i = 0; i < rows; i++) {
+                iAux1Mas = i + 1;
+                for (j = 0; j <= (colsDiv14); j++) {
+                    jPor14 = j * 14;
                     /*cargo los vectores para iterar 14 celulas*/
-                    vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (j * 14)));
-                    vCen = _mm_loadu_si128((__m128i*) (mundo[i + 1] + (j * 14)));
-                    vInf = _mm_loadu_si128((__m128i*) (mundo[i + 2] + (j * 14)));
+                    vSup = _mm_loadu_si128((__m128i*) (mundo[i] + (jPor14)));
+                    vCen = _mm_loadu_si128((__m128i*) (mundo[iAux1Mas] + (jPor14)));
+                    vInf = _mm_loadu_si128((__m128i*) (mundo[i + 2] + (jPor14)));
 
                     /*sumo por cada columna*/
                     vSumIni = _mm_add_epi8(vSup, vCen);
@@ -187,7 +200,7 @@ int main(int argc, char *argv[]) {
                     vRes = _mm_srli_si128(vRes, 1);
 
                     /*guardo en la matrizAux el nuevo estado de las 14 celulas analisadas*/
-                    _mm_storeu_si128((__m128i*) (mundoAux[i + 1] + (j * 14) + 1), vRes);
+                    _mm_storeu_si128((__m128i*) (mundoAux[iAux1Mas] + (jPor14) + 1), vRes);
 
                 }
             }
